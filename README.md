@@ -1,52 +1,52 @@
 # GitNoted
 
-GitNoted is a simple document server that works with Github Wiki or Gollum to serve foot notes for external websites just by adding a small script tag.
-
-## Usage
-
-```
-$ gitnoted [options] <git url> <local path to store>
-  options:
-    -a, --allow-origin DOMAIN[:PORT] Allow cross-origin resource sharing (CORS) from this domain (can be set multiple times)
-    -h, --host ADDRESS               Bind address (default: 'localhost')
-    -p, --port PORT                  Port (default: 4567)
-    -e, --extra-app PATH.rb          Add an extra Sinatra application
-    -i, --interval SECONDS           Interval to update the git repository
-        --threads MIN:MAX            Number of HTTP worker threads
-  environment variables:
-    GIT_USERNAME                 Git username
-    GIT_PASSWORD                 Git password
-    GITHUB_ACCESS_TOKEN          Github personal API token
-```
+GitNoted is a simple document server that works with [Github Wiki](https://help.github.com/articles/about-github-wikis/) or [Gollum](https://github.com/gollum/gollum) to serve foot notes for external web sites just by adding a small script tag.
 
 ## JavaScript tag
 
-You can find JavaScript on [lib/git_noted/public/js/gitnoted.js](lib/git_noted/public/js/gitnoted.js). This file will be served as `/js/gitnoted.js` from the GitNoted server. You can import it using `<script>` tag as following.
+You can find the JavaScript code on [lib/git_noted/public/js/gitnoted.js](lib/git_noted/public/js/gitnoted.js). This file will be served as `/js/gitnoted.js` from the GitNoted server. You can import it using `<script>` tag as following.
 
 ```
 <!-- GitNoted depends on jQuery -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
+
 <!-- GitNoted -->
 <link rel="stylesheet" type="text/css" href="http://localhost:4567/css/gitnoted.css" />
 <script type="text/javascript" src="http://localhost:4567/js/gitnoted.js"></script>
 ```
 
-Once the JavaScript tag is set up, you can embed following `<div class="gitnoted" data-labels="tag,tag,...">` tags to your document to embed foot notes. Here is an example:
+Please replace `http://localhost:4567` to point your GitNoted server (see bellow).
+
+Once the JavaScript tag is set up, you can embed following `<div class="gitnoted" data-labels="label,label,...">` tags your HTML to embed notes. Here is an example:
 
 ```
-<div class="gitnoted" data-labels="purpose:test"></div>
+<div class="gitnoted" data-labels="purpose:test,message:hello"></div>
 ```
 
-`data-labels` is used to search foot notes by labels. Notes that include all of the labels match.
+`data-labels` is used to search notes by labels. Notes that include all of the labels match.
 
 
-## Starting with Github Wiki
+## Writing documents
+
+Include `:label: label,label,label,...` line to a page. Example:
+
+```
+# My first wiki page
+
+Hello!
+
+---
+
+:label: purpose:test,message:hello
+```
+
+## Running server with Github Wiki
 
 Prepare following information first:
 
-* Domain names (and ports) of your website that embeds foot notes. You can use multiple sites. Here uses `example.com` and `localhost:8080` as an example.
+* Domain names (and ports) of your website that embeds notes. You can use multiple sites. Here uses `example.com` and `localhost:8080` as an example.
 * Repository URL of a Github Wiki. Format of URL is `https://github.com/<user>/<repo>.wiki.git` where "&lt;user&&gt;" and &lt;repo&gt; are your repository's username and repository name.
 
 This command starts a server on http://0.0.0.0:4567.
@@ -59,7 +59,7 @@ $ gitnoted "https://github.com/frsyuki/gitnoted.wiki.git" \
            -h 0.0.0.0 -p 4567
 ```
 
-## Starting with a private github repository
+## Running server with a private github repository
 
 Instead of using public Github Wiki (Github Wiki is always public), you can put Markdown files on a private github repository. File name must be `<name>.md` (ends with `.md`).
 
@@ -83,7 +83,7 @@ $ gitnoted \
 
 ## Deploying to Heroku
 
-You need to create 3 files on a new git repository
+You need to create 4 files on a new git repository
 
 ### Procfile
 
@@ -91,6 +91,14 @@ Put a gitnoted command in your `Procfile` with `$PORT` variable as the port numb
 
 ```
 web: bundle exec gitnoted "https://github.com/frsyuki/gitnoted.wiki.git ./repo -a example.com -h 0.0.0.0 -p $PORT
+```
+
+### Gemfile
+
+```
+source "https://rubygems.org"
+ruby "2.4.0"
+gem "gitnoted"
 ```
 
 ### .buildpacks
@@ -109,10 +117,26 @@ cmake
 pkg-config
 ```
 
+## Server usage
 
+```
+$ gitnoted [options] <git url> <local path to store>
+  options:
+    -a, --allow-origin DOMAIN[:PORT] Allow cross-origin resource sharing (CORS) from this domain (can be set multiple times)
+    -h, --host ADDRESS               Bind address (default: 'localhost')
+    -p, --port PORT                  Port (default: 4567)
+    -e, --extra-app PATH.rb          Add an extra Sinatra application
+    -i, --interval SECONDS           Interval to update the git repository
+        --threads MIN:MAX            Number of HTTP worker threads
+  environment variables:
+    GIT_USERNAME                 Git username
+    GIT_PASSWORD                 Git password
+    GITHUB_ACCESS_TOKEN          Github personal API token
+```
 
 ----
 
-Author: Sadayuki Furuhashi
-License: MIT
+    GitNoted
+    Author: Sadayuki Furuhashi
+    License: MIT
 
