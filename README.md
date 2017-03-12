@@ -49,19 +49,19 @@ Prepare following information first:
 * Domain names (and ports) of your website that embeds notes. You can use multiple sites. Here uses `example.com` and `localhost:8080` as an example.
 * Repository URL of a Github Wiki. Format of URL is `https://github.com/<user>/<repo>.wiki.git` where "&lt;user&&gt;" and &lt;repo&gt; are your repository's username and repository name.
 
-This command starts a server on http://0.0.0.0:4567.
+This command starts a server on http://localhost:4567:
 
 ```
 $ gem install gitnoted
 $ gitnoted "https://github.com/frsyuki/gitnoted.wiki.git" \
            ./repo \
            -a example.com -a localhost:8080 \
-           -h 0.0.0.0 -p 4567
+           -h localhost -p 4567
 ```
 
 ## Running server with a private github repository
 
-Instead of using public Github Wiki (Github Wiki is always public), you can put Markdown files on a private github repository. File name must be `<name>.md` (ends with `.md`).
+Instead of using public Github Wiki (Github Wiki is always public), you can put markdown files on a private github repository. File name must be `<name>.md` (ends with `.md`).
 
 To start GitNoted for a private github repository, prepare following information:
 
@@ -69,7 +69,7 @@ To start GitNoted for a private github repository, prepare following information
 * Repository URL of the Github repository. Format of URL is `https://github.com/<user>/<repo>.git` where "&lt;user&&gt;" and &lt;repo&gt; are your repository's username and repository name.
 * [Github personal API token](https://github.com/blog/1509-personal-api-tokens): This token is used to pull a private Github. You can create a token on [your account configuration page](https://github.com/settings/tokens). You need to set it to `GITHUB_ACCESS_TOKEN` environment variable.
 
-This command starts a server on http://0.0.0.0:4567.
+This command starts a server on http://localhost:4567:
 
 ```
 $ gem install gitnoted
@@ -78,7 +78,7 @@ $ gitnoted \
            "https://github.com/frsyuki/my_secret_repository.wiki.git" \
            ./repo \
            -a example.com -a localhost:8080 \
-           -h 0.0.0.0 -p 4567
+           -h localhost -p 4567
 ```
 
 ## Deploying to Heroku
