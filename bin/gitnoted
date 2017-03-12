@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'logger'
+
+extra_app_paths = []
+
+scheduler_options = {
+  interval: 60
+}
+
+app_options = {
+  allow_origins: [],
+}
+
+repo_options = {
+  logger: Logger.new(STDOUT),
+}
+
+server_options = {
+  server: 'puma',
+  Host: 'localhost',
+  Port: 4567,
+  Threads: nil,
+}
+
+op = OptionParser.new
+op.banner = "#{$0} [options] <git url> <local path to store>"
+
+op.separator "  options:"
+
+op.on('-a', '--allow-origin DOMAIN[:PORT]', "Allow cross-origin resource sharing (CORS) from this domain (can be set multiple times)") do |v|
+  app_options[:allow_origins] << v
+end
+
+op.on('-h', '--host ADDRESS', "Bind address (default: 'localhost')") do |v|
+  server_options[:Host] = v
+end
+
+op.on('-p', '--port PORT', Integer, "Port (default: 4567)") do |v|
+  server_options[:Port] = v
+end
+
+op.on('-e', '--extra-app PATH.rb', "Add an extra Sinatra application") do |v|
+  extra_app_paths << v
+end
+
+op.on('-i', '--interval SECONDS', Integer, "Interval to update the git repository") do |v|
+  scheduler_options[:interval] = v
+end
+
+op.on('--threads MIN:MAX', "Number of HTTP worker threads") do |v|
+  server_options[:Threads] = v
+end
+
+op.separator <<EOF
+  environment variables:
+    GIT_USERNAME                 Git username
+    GIT_PASSWORD                 Git password
+    GITHUB_ACCESS_TOKEN          Github personal API token
+EOF
+
+
+op.parse!(ARGV)
+
+if ARGV.length != 2
+  puts op.to_s
+  exit 1
+end
+
+remote_url, local_path = *ARGV
+
+require 'git_noted'
+require 'sigdump/setup'
+
+ENV['RACK_ENV'] ||= 'production'
+
+if ENV['GIT_USERNAME']
+  repo_options[:username] = ENV['GIT_USERNAME']
+  repo_options[:password] = ENV['GIT_PASSWORD']
+elsif ENV['GITHUB_ACCESS_TOKEN']
+  repo_options[:username] = ENV['GITHUB_ACCESS_TOKEN']
+  repo_options[:password] = 'x-oauth-basic'
+end
+
+repository = GitNoted::Repository.new(remote_url, local_path, **repo_options)
+app = GitNoted::Application.with(repository: repository, **app_options)
+repository.schedule_update! scheduler_options[:interval]
+
+extra_app_paths.each do |path|
+  app.instance_eval(File.read(path), path)
+end
+
+app.run!(server_options)
+

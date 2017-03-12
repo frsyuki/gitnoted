@@ -1,0 +1,60 @@
+ul.gitnoted {
+  list-style-type: none;
+  list-style-position: outside;
+  margin: 0;
+  padding: 0;
+}
+
+ul.gitnoted > li.gitnoted-note {
+  display: block;
+  margin: 2em 0;
+  padding: 0.8em 1em 0.5em 1em;
+  border: 1px solid #ddd;
+  background-color: #fff;
+}
+
+ul.gitnoted > li.gitnoted-note > div.gitnoted-body
+h1 {
+  font-size: 120%;
+}
+
+ul.gitnoted > li.gitnoted-note > div.gitnoted-body
+h2 {
+  font-size: 120%;
+}
+
+ul.gitnoted > li.gitnoted-note > div.gitnoted-body
+h3 {
+  font-size: 100%;
+}
+
+ul.gitnoted > li.gitnoted-note > div.gitnoted-body
+h4 {
+  font-size: 100%;
+}
+
+ul.gitnoted > li.gitnoted-note > ul.gitnoted-labels {
+  list-style-type: none;
+  list-style-position: outside;
+  text-align: right;
+  font-size: 70%;
+}
+
+ul.gitnoted > li.gitnoted-note > ul.gitnoted-labels > li.gitnoted-label {
+  display: inline-block;
+  margin-left: 1.3em;
+  margin-right: -1em;
+  padding: 0 0.5em;
+  color: #fff;
+  background-color: #bbb;
+  border-radius: 0.8em;
+}
+
+ul.gitnoted > li.gitnoted-note > ul.gitnoted-labels .gitnoted-label-button:hover {
+  background-color: #888;
+}
+
+ul.gitnoted > li.gitnoted-note code {
+  white-space: pre;
+}
+

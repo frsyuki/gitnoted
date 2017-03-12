@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>GitNotes setup completed</title>
+</head>
+<body>
+  <h1>GitNotes setup completed</h1>
+  <section id="api_notes_html">
+    <form action="/api/notes.html":>
+      <h2>GET /api/notes.html</h2>
+      <p>Search and render notes.</p>
+      <div>
+        <label for="labels">Labels (separated by comma ","):</label><br />
+        <input type="text" name="labels" id="labels" />
+      </div>
+      <div>
+        <label for="exclude_labels">Exclude labels (separated by comma ","):</label><br />
+        <input type="text" name="exclude_labels" id="exclude_labels" />
+      </div>
+      <input type="submit" value="Go">
+    </form>
+  </section>
+  <section id="api_notes">
+    <form action="/api/notes":>
+      <h2>GET /api/notes</h2>
+      <p>Search notes.</p>
+      <div>
+        <label for="labels">Labels (separated by comma ","):</label><br />
+        <input type="text" name="labels" id="labels" />
+      </div>
+      <div>
+        <label for="exclude_labels">Exclude labels (separated by comma ","):</label><br />
+        <input type="text" name="exclude_labels" id="exclude_labels" />
+      </div>
+      <input type="submit" value="Go">
+    </form>
+  </section>
+  <section id="api_labels">
+    <form action="/api/labels":>
+      <h2>GET /api/labels</h2>
+      <p>Search labels.</p>
+      <div>
+        <label for="prefix">Label name prefix:</label><br />
+        <input type="text" name="prefix" id="prefix" />
+      </div>
+      <div>
+        <label for="used_with">Used with labels (separated by comma ","):</label><br />
+        <input type="text" name="used_with" id="used_with" />
+      </div>
+      <input type="submit" value="Go">
+    </form>
+  </section>
+</body>
+</html>
