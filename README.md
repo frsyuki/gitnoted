@@ -19,18 +19,20 @@ You can find the JavaScript code on [lib/git_noted/public/js/gitnoted.js](lib/gi
 
 Please replace `http://localhost:4567` to point your GitNoted server (see bellow).
 
-Once the JavaScript tag is set up, you can embed following `<div class="gitnoted" data-labels="label,label,...">` tags your HTML to embed notes. Here is an example:
+Once the JavaScript tag is set up, you can add following `<div class="gitnoted" data-labels="label,label,...">` tags your HTML to embed notes. Here is an example:
 
 ```
 <div class="gitnoted" data-labels="purpose:test,message:hello"></div>
 ```
 
-`data-labels` is used to search notes by labels. Notes that include all of the labels match.
+`data-labels` is used to search notes by labels. Notes that include all of them match.
 
 
-## Writing documents
+## Writing notes
 
-Include `:label: label,label,label,...` line to a page. Example:
+Edit mode must be Markdown. Other formats are not supported.
+
+In the body of a page, you need to include `:label: label,label,label,...` line at the beginning or at the end. Example:
 
 ```
 # My first wiki page
@@ -46,8 +48,8 @@ Hello!
 
 Prepare following information first:
 
-* Domain names (and ports) of your website that embeds notes. You can use multiple sites. Here uses `example.com` and `localhost:8080` as an example.
-* Repository URL of a Github Wiki. Format of URL is `https://github.com/<user>/<repo>.wiki.git` where "&lt;user&&gt;" and &lt;repo&gt; are your repository's username and repository name.
+* Domain names (and ports) of your website that embeds notes. You can have multiple web sites. Here uses `example.com` and `localhost:8080` as an example.
+* Repository URL of a Github Wiki. Format of the URL is `https://github.com/<user>/<repo>.wiki.git` where "&lt;user&gt; and &lt;repo&gt; are your repository's username and repository name.
 
 This command starts a server on http://localhost:4567:
 
@@ -59,17 +61,7 @@ $ gitnoted "https://github.com/frsyuki/gitnoted.wiki.git" \
            -h localhost -p 4567
 ```
 
-## Running server with a private github repository
-
-Instead of using public Github Wiki (Github Wiki is always public), you can put markdown files on a private github repository. File name must be `<name>.md` (ends with `.md`).
-
-To start GitNoted for a private github repository, prepare following information:
-
-* Domain names (and ports) of your website that embeds foot notes. You can use multiple sites. Here uses `example.com` and `localhost:8080` as an example.
-* Repository URL of the Github repository. Format of URL is `https://github.com/<user>/<repo>.git` where "&lt;user&&gt;" and &lt;repo&gt; are your repository's username and repository name.
-* [Github personal API token](https://github.com/blog/1509-personal-api-tokens): This token is used to pull a private Github. You can create a token on [your account configuration page](https://github.com/settings/tokens). You need to set it to `GITHUB_ACCESS_TOKEN` environment variable.
-
-This command starts a server on http://localhost:4567:
+If your repository is private, you also need to set `GITHUB_ACCESS_TOKEN` environment variable. You can create a token on [your account configuration page](https://github.com/settings/tokens). Example:
 
 ```
 $ gem install gitnoted
@@ -81,9 +73,32 @@ $ gitnoted \
            -h localhost -p 4567
 ```
 
+## Running server with other git repositories
+
+Instead of using Github Wiki, you can use any git repositories that contain files named `<name>.md`. You can use your text editor or tools such as [Gollum](https://github.com/gollum/gollum) to push `.md` files.
+
+To start GitNoted for those git repositories, prepare following information:
+
+* Domain names (and ports) of your website that embeds notes. You can have multiple web sites. Here uses `example.com` and `localhost:8080` as an example.
+* Repository URL of the git repository. It should provide http access (ssh is not supported at this moment).
+* Username and password of the git repository. You need to set them to GIT_USERNAME and GIT_PASSWORD environment variables.
+
+This command starts a server on http://localhost:4567:
+
+```
+$ gem install gitnoted
+$ export GIT_USERNAME=myname
+$ export GIT_PASSWORD=topsecret
+$ gitnoted \
+           "https://github.com/frsyuki/my_secret_repository.wiki.git" \
+           ./repo \
+           -a example.com -a localhost:8080 \
+           -h localhost -p 4567
+```
+
 ## Deploying to Heroku
 
-You need to create 4 files on a new git repository
+You need to create 4 files in a new git repository.
 
 ### Procfile
 
@@ -104,7 +119,6 @@ gem "gitnoted"
 ### .buildpacks
 
 ```
-# .buildpacks
 https://github.com/ddollar/heroku-buildpack-apts
 https://github.com/heroku/heroku-buildpack-ruby
 ```
@@ -112,7 +126,6 @@ https://github.com/heroku/heroku-buildpack-ruby
 ### Aptfile
 
 ```
-# Aptfile
 cmake
 pkg-config
 ```
