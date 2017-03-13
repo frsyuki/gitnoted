@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |gem|
-  gem.name        = "git-notes"
-  gem.description = "A simple document server that works with Github Wiki or Gollum to serve foot notes for external websites just by adding a small script tag."
+  gem.name        = "gitnoted"
+  gem.description = "Simple document server that works with Github Wiki or Gollum to serve foot notes for external websites just by adding a small script tag"
   gem.homepage    = "https://github.com/frsyuki/gitnoted"
   gem.summary     = gem.description
   gem.version     = "0.1.0"

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    git-notes (0.1.0)
+    gitnoted (0.1.0)
       concurrent-ruby (>= 1.0.5)
       puma (~> 3.7)
       rack-cors (~> 0.4)
@@ -33,7 +33,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  git-notes!
+  gitnoted!
   rake (>= 0.9.2)
 
 BUNDLED WITH
