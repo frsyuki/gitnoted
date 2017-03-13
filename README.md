@@ -2,6 +2,13 @@
 
 GitNoted is a simple document server that works with [Github Wiki](https://help.github.com/articles/about-github-wikis/) or [Gollum](https://github.com/gollum/gollum) to serve foot notes for external web sites just by adding a small script tag.
 
+* [JavaScript tag](#javascript-tag)
+* [Writing notes](#writing-notes)
+* [Running server with Github Wiki](#running-server-with-github-wiki)
+* [Running server with other git repositories](#running-server-with-other-git-repositories)
+* [Deploying to Heroku](#deploying-to-heroku)
+* [Server usage](#server-usage)
+
 ## JavaScript tag
 
 You can find the JavaScript code on [lib/git_noted/public/js/gitnoted.js](lib/git_noted/public/js/gitnoted.js). This file will be served as `/js/gitnoted.js` from the GitNoted server. You can import it using `<script>` tag as following.
