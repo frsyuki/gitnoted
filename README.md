@@ -105,7 +105,20 @@ $ gitnoted \
 
 ## Deploying to Heroku
 
-You need to create 4 files in a new git repository.
+You can create a new Heroku application using this command:
+
+```
+$ gem install heroku
+$ heroku create --buildpack https://github.com/heroku/heroku-buildpack-multi.git
+```
+
+Or, you can use your existent Heroku application:
+
+```
+$ heroku create buildpacks:set https://github.com/heroku/heroku-buildpack-multi.git --app=your_app_name
+```
+
+Then, you need to put 4 files to the application.
 
 ### Procfile
 
